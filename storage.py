@@ -6,14 +6,18 @@ from pathlib import Path
 DATA_FILE = Path(__file__).parent / "data" / "todos.json"
 
 
-def load_todos():
+def _default_state():
+    return {"next_id": 1, "todos": []}
+
+
+def load_state():
     if not DATA_FILE.exists():
-        return []
+        return _default_state()
     with DATA_FILE.open("r", encoding="utf-8") as f:
         return json.load(f)
 
 
-def save_todos(todos):
+def save_state(state):
     DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
     with DATA_FILE.open("w", encoding="utf-8") as f:
-        json.dump(todos, f, ensure_ascii=False, indent=2)
+        json.dump(state, f, ensure_ascii=False, indent=2)
